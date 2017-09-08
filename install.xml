@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<code>admim_quickedit</code>
+	<name>Quick Product Edit</name>
+	<version>1.5</version>
+	<author>Pogorelov Vlad - Like Digital Co.</author>
+	<link>http://www.opencart.com</link>
+	<file path="admin/controller/catalog/product.php">
+		<operation>
+			<search><![CDATA[
+				protected function getList() {
+			]]></search>
+			<add position="after"><![CDATA[
+				$this->document->addScript('view/javascript/quickedit.js');
+				$this->document->addStyle('view/stylesheet/quickedit.css');
+			]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[
+				'status'     => ($result['status']) ? $this->language->get('text_enabled') : $this->language->get('text_disabled'),
+			]]></search>
+			<add position="replace"><![CDATA[
+				'status' => $result['status'],
+				'quickedit'	 => $this->url->link('module/quickedit_form', 'token=' . $this->session->data['token'] . '&product_id=' . $result['product_id'] . $url, 'SSL'),
+			]]></add>
+		</operation>
+		<operation>
+			<search>
+				<![CDATA[
+					$data['button_filter'] = $this->language->get('button_filter');
+				]]>
+			</search>
+			<add position="after">
+				<![CDATA[
+					$data['button_quickedit'] = $this->language->get('button_quickedit');
+				]]>
+			</add>
+		</operation>
+	</file>
+	<file path="admin/view/template/catalog/product_list.tpl">
+		<operation>
+			<search>
+				<![CDATA[
+					<form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-product">
+				]]>
+			</search>
+			<add position="replace">
+				<![CDATA[
+					<form action="<?php echo $delete; ?>" method="post" enctype="multipart/form-data" id="form-product" data-token="<?php echo $token; ?>">
+				]]>
+			</add>
+		</operation>
+		<operation>
+			<search>
+				<![CDATA[
+					<td class="text-left"><?php echo $product['name']; ?></td>
+				]]>
+			</search>
+			<add position="replace">
+				<![CDATA[
+					<td class="text-left">
+	                    <span class="quickedit" data-id="<?php echo $product['product_id']; ?>" data-key="name" data-value="<?php echo $product['name']; ?>">
+	                      <?php echo $product['name']; ?>
+	                    </span>
+                  	</td>
+				]]>
+			</add>
+		</operation>
+		<operation>
+			<search>
+				<![CDATA[
+					<td class="text-left"><?php echo $product['model']; ?></td>
+				]]>
+			</search>
+			<add position="replace">
+				<![CDATA[
+					<td class="text-left">
+	                    <span class="quickedit" data-id="<?php echo $product['product_id']; ?>" data-key="model" data-value="<?php echo $product['model']; ?>">
+	                    	<?php echo $product['model']; ?>  
+	                    </span>
+                  	</td>
+				]]>
+			</add>
+		</operation>
+		<operation>
+			<search>
+				<![CDATA[
+					<?php echo $product['price']; ?>
+				]]>
+			</search>
+			<add position="replace">
+				<![CDATA[
+	                <span class="quickedit" data-id="<?php echo $product['product_id']; ?>" data-key="price" data-value="<?php echo $product['price']; ?>"><?php echo $product['price']; ?></span>
+				]]>
+			</add>
+		</operation>
+		<operation>
+			<search>
+				<![CDATA[
+					<?php echo $product['quantity']; ?>
+				]]>
+			</search>
+			<add position="replace">
+				<![CDATA[
+	                <span class="quickedit" data-id="<?php echo $product['product_id']; ?>" data-key="quantity" data-value="<?php echo $product['quantity']; ?>"><?php echo $product['quantity']; ?></span>
+				]]>
+			</add>
+		</operation>
+		<operation>
+			<search>
+				<![CDATA[
+					<td class="text-left"><?php echo $product['status']; ?></td>
+				]]>
+			</search>
+			<add position="replace">
+				<![CDATA[
+					<td class="text-left">
+	                    <div class="material-switch" data-id="<?php echo $product['product_id']; ?>">
+                            <input id="status<?php echo $i;?>" name="status" type="checkbox" <?php echo ($product['status'])?'checked="checked"':'';?>/>
+                            <label for="status<?php echo $i;?>" class="label-success"></label>
+                        </div>
+                  	</td>
+                  	<?php $i++; ?>
+				]]>
+			</add>
+		</operation>
+		<operation>
+			<search>
+				<![CDATA[
+					<?php foreach ($products as $product) { ?>
+				]]>
+			</search>
+			<add position="before">
+				<![CDATA[
+					<?php $i = 0; ?>
+				]]>
+			</add>
+		</operation>
+		<operation>
+			<search>
+				<![CDATA[
+					<td class="text-right"><a href="<?php echo $product['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+				]]>
+			</search>
+			<add position="replace">
+				<![CDATA[
+					<td class="text-right">
+						<a href="<?php echo $product['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+						<a href="<?php echo $product['quickedit']; ?>" data-toggle="tooltip" title="<?php echo $button_quickedit; ?>" class="btn btn-info quickedit_form-button"><i class="fa fa-fast-forward"></i></a>
+					</td>
+				]]>
+			</add>
+		</operation>
+	</file>
+	<file path="admin/language/russian/catalog/product.php">
+		<operation>
+			<search>
+				<![CDATA[
+					$_['error_keyword']             = 'SEO keyword already in use!';
+				]]>
+			</search>
+			<add position="after">
+				<![CDATA[
+					$_['button_quickedit']             = 'Быстрое редактирование';
+				]]>
+			</add>
+		</operation>
+	</file>
+</modification>
