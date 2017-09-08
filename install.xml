@@ -3,7 +3,7 @@
 	<code>admim_quickedit</code>
 	<name>Quick Product Edit</name>
 	<version>1.5</version>
-	<author>Pogorelov Vlad - Like Digital Co.</author>
+	<author>Pogorelov Vlad</author>
 	<link>http://www.opencart.com</link>
 	<file path="admin/controller/catalog/product.php">
 		<operation>
