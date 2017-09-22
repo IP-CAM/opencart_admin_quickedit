@@ -4,7 +4,7 @@
 	<name>Quick Product Edit</name>
 	<version>1.5</version>
 	<author>Pogorelov Vlad</author>
-	<link>http://www.opencart.com</link>
+	<link>#</link>
 	<file path="admin/controller/catalog/product.php">
 		<operation>
 			<search><![CDATA[
